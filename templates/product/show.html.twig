@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }} - VapeShop{% endblock %}
+
+{% block body %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="glass rounded-3xl overflow-hidden border border-white/10">
+        <div class="grid grid-cols-1 md:grid-cols-2">
+            <!-- Image -->
+            <div class="lg:col-span-1">
+                <div class="glass rounded-3xl overflow-hidden p-4">
+                    {% set img_url = product.image starts with 'http' ? product.image : asset(product.image) %}
+                    <img src="{{ img_url }}" 
+                         alt="{{ product.name }}" 
+                         class="w-full rounded-2xl shadow-2xl"
+                         onerror="this.src='https://images.unsplash.com/photo-1699631559024-6ab8b00489a8?q=80&w=600&auto=format&fit=crop';">
+                </div>
+            </div>
+            <!-- Details -->
+            <div class="p-8 md:p-12 flex flex-col justify-center">
+                <div class="mb-6">
+                    <span class="text-neon-green font-bold tracking-wider uppercase text-sm border border-neon-green/30 px-3 py-1 rounded-full">
+                        {{ product.category ? product.category.name : 'Unknown' }}
+                    </span>
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ product.name }}</h1>
+                <p class="text-3xl text-white font-bold mb-8">{{ product.price|number_format(3) }} TND</p>
+                
+                <div class="prose prose-invert mb-10 text-gray-400">
+                    <p>{{ product.description }}</p>
+                    <p>High quality materials, designed for the ultimate experience. Includes standard manufacturer warranty.</p>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    {% if product.stock > 0 %}
+                    <button data-add-to-cart data-product-id="{{ product.id }}" class="flex-1 bg-neon-green text-black font-bold text-lg py-4 rounded-xl hover:shadow-[0_0_25px_#39ff14] hover:scale-[1.02] transition-all transform duration-200">
+                        Add to Cart
+                    </button>
+                    {% else %}
+                    <button disabled class="flex-1 bg-gray-600 text-gray-400 font-bold text-lg py-4 rounded-xl cursor-not-allowed">
+                        Out of Stock
+                    </button>
+                    {% endif %}
+                    <button class="p-4 glass rounded-xl border border-white/20 hover:bg-white/10 text-white transition-colors">
+                        ❤️
+                    </button>
+                </div>
+                
+                <div class="mt-8 flex gap-4 text-sm text-gray-500">
+                    {% if product.stock > 0 %}
+                    <span class="text-neon-green">✅ In Stock ({{ product.stock }} available)</span>
+                    {% else %}
+                    <span class="text-red-500">❌ Out of Stock</span>
+                    {% endif %}
+                    <span>🚀 Fast Shipping</span>
+                    <span>🛡️ Secure Payment</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
